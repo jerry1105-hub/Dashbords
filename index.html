@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GHL Theme Customizer</title>
+  <style>
+    body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  transition: all 0.3s ease;
+}
+
+#theme-customizer {
+  padding: 20px;
+  max-width: 500px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+button {
+  margin: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+#preview-panel {
+  margin-top: 20px;
+  border: 1px solid #ccc;
+  padding: 15px;
+  border-radius: 5px;
+  background: var(--preview-bg, #ffffff);
+  color: var(--preview-text, #000000);
+}
+
+.preview-content {
+  padding: 15px;
+}
+
+  </style>
+</head>
+<body>
+  <div id="theme-customizer">
+    <h2>Dashboard Theme Customizer</h2>
+
+    <!-- Theme Buttons -->
+    <button class="theme-btn" data-theme="light">Light Theme</button>
+    <button class="theme-btn" data-theme="dark">Dark Theme</button>
+    <button class="theme-btn" data-theme="modern">Modern Theme</button>
+
+    <!-- Reset Button -->
+    <button id="reset-theme">Reset to Default</button>
+
+    <!-- Preview Panel -->
+    <div id="preview-panel">
+      <h3>Preview</h3>
+      <div class="preview-content">
+        <button>Sample Button</button>
+        <p>Sample Text</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Define Themes
+const themes = {
+  light: {
+    backgroundColor: "#ffffff",
+    textColor: "#000000",
+    buttonColor: "#007bff",
+    font: "Arial, sans-serif",
+  },
+  dark: {
+    backgroundColor: "#1c1c1c",
+    textColor: "#f5f5f5",
+    buttonColor: "#ff9800",
+    font: "Roboto, sans-serif",
+  },
+  modern: {
+    backgroundColor: "#f0f4f8",
+    textColor: "#333333",
+    buttonColor: "#4caf50",
+    font: "Open Sans, sans-serif",
+  },
+};
+
+// Apply Theme Function
+function applyTheme(themeName) {
+  const theme = themes[themeName];
+  if (theme) {
+    document.body.style.backgroundColor = theme.backgroundColor;
+    document.body.style.color = theme.textColor;
+    document.body.style.fontFamily = theme.font;
+
+    const buttons = document.querySelectorAll("button");
+    buttons.forEach((btn) => {
+      btn.style.backgroundColor = theme.buttonColor;
+      btn.style.color = "#ffffff";
+    });
+
+    // Update Preview
+    const preview = document.querySelector(".preview-content");
+    preview.style.backgroundColor = theme.backgroundColor;
+    preview.style.color = theme.textColor;
+    preview.style.fontFamily = theme.font;
+  }
+}
+
+// Save Theme to Local Storage
+function saveTheme(themeName) {
+  localStorage.setItem("selectedTheme", themeName);
+}
+
+// Load Saved Theme
+function loadTheme() {
+  const savedTheme = localStorage.getItem("selectedTheme");
+  if (savedTheme) {
+    applyTheme(savedTheme);
+  }
+}
+
+// Reset Theme
+function resetTheme() {
+  document.body.style = ""; // Reset all inline styles
+  localStorage.removeItem("selectedTheme");
+  const buttons = document.querySelectorAll("button");
+  buttons.forEach((btn) => {
+    btn.style.backgroundColor = "";
+    btn.style.color = "";
+  });
+}
+
+// Event Listeners
+document.querySelectorAll(".theme-btn").forEach((btn) => {
+  btn.addEventListener("click", (e) => {
+    const theme = e.target.dataset.theme;
+    applyTheme(theme);
+    saveTheme(theme);
+  });
+});
+
+document.getElementById("reset-theme").addEventListener("click", resetTheme);
+
+// Load theme on page load
+window.addEventListener("load", loadTheme);
+
+  </script>
+</body>
+</html>
